@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The $100 Challenge Binding Agreement</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        accentRed: '#ef4444',
+                        accentGreen: '#22c55e',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        canvas {
+            touch-action: none;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-darkBg text-slate-100 flex flex-col items-center justify-start p-4 sm:p-6">
+
+    <div id="appContainer" class="w-full max-w-2xl mx-auto bg-cardBg rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden p-6 sm:p-8">
+        
+        <!-- HEADER -->
+        <div class="text-center border-b border-slate-700 pb-6 mb-6">
+            <span class="bg-red-500/10 text-red-400 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-red-500/20">Binding Agreement &amp; Lockout Vault</span>
+            <h1 class="text-2xl sm:text-3xl font-black mt-3 tracking-tight text-white">The $100 Challenge Contract</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">Strict Rules • No Take-Backs • Zero Exceptions</p>
+        </div>
+
+        <!-- CONTRACT VIEW (Shown before locking) -->
+        <div id="contractView" class="space-y-6">
+            
+            <!-- PARTIES -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Party A</span>
+                    <h2 class="text-lg font-bold text-slate-100 mt-0.5">Yafet Nebiyu</h2>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Party B</span>
+                    <h2 class="text-lg font-bold text-slate-100 mt-0.5">Mikiyas Tafa</h2>
+                </div>
+            </div>
+
+            <!-- TERMS -->
+            <div class="bg-slate-900/40 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300">Terms &amp; Timeline</h3>
+                <ul class="text-sm text-slate-300 space-y-2 list-disc list-inside">
+                    <li><strong class="text-white">Objective:</strong> Both parties must successfully generate and make exactly <strong class="text-green-400">$100</strong>.</li>
+                    <li><strong class="text-white">Start Date &amp; Time:</strong> Friday, October 1 at 7:30 AM</li>
+                    <li><strong class="text-white">Deadline:</strong> October 31 at 11:59 PM</li>
+                    <li><strong class="text-white">Irrevocable Clause:</strong> Once signed and locked below, there are zero take-backs, cancellations, or modifications permitted under any circumstances.</li>
+                </ul>
+            </div>
+
+            <!-- SCENARIOS -->
+            <div class="bg-slate-900/40 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300">Outcome Matrix</h3>
+                <div class="space-y-2 text-sm text-slate-300">
+                    <div class="p-2.5 rounded-lg bg-slate-800/50 flex justify-between items-center">
+                        <span>Both parties make $100</span>
+                        <span class="font-bold text-green-400">No Punishment</span>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-slate-800/50 flex justify-between items-center">
+                        <span>One makes $100, the other fails</span>
+                        <span class="font-bold text-amber-400">Loser does punishment</span>
+                    </div>
+                    <div class="p-2.5 rounded-lg bg-slate-800/50 flex justify-between items-center">
+                        <span>Both parties fail</span>
+                        <span class="font-bold text-red-400">Both do punishment</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PUNISHMENT -->
+            <div class="bg-red-950/20 border border-red-900/40 p-5 rounded-xl space-y-2">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-red-400 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    The Mandatory Punishment
+                </h3>
+                <p class="text-sm text-red-200/90 leading-relaxed">
+                    If penalized under the terms, the responsible party must go in person to a local pharmacy, ask the clerk/pharmacist for an adult diaper size that fits them, record the entire interaction on video, and send it directly to the winner as proof.
+                </p>
+            </div>
+
+            <!-- SIGNATURE SECTION -->
+            <div class="space-y-6 pt-4 border-t border-slate-800">
+                <h3 class="text-base font-bold text-white text-center">Digital Signatures</h3>
+                <p class="text-xs text-slate-400 text-center -mt-4">Sign inside the boxes using your finger or mouse.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Yafet Signature -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs font-medium text-slate-300">
+                            <span>Yafet Nebiyu</span>
+                            <button type="button" onclick="clearPad('yafetCanvas')" class="text-slate-400 hover:text-white underline">Clear</button>
+                        </div>
+                        <div class="border-2 border-slate-700 rounded-xl bg-slate-900 overflow-hidden relative">
+                            <canvas id="yafetCanvas" class="w-full h-36 cursor-crosshair touch-none"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Mikiyas Signature -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs font-medium text-slate-300">
+                            <span>Mikiyas Tafa</span>
+                            <button type="button" onclick="clearPad('mikiyasCanvas')" class="text-slate-400 hover:text-white underline">Clear</button>
+                        </div>
+                        <div class="border-2 border-slate-700 rounded-xl bg-slate-900 overflow-hidden relative">
+                            <canvas id="mikiyasCanvas" class="w-full h-36 cursor-crosshair touch-none"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONFIRM / LOCK BUTTON -->
+                <div class="pt-4">
+                    <button type="button" onclick="lockContract()" class="w-full py-4 px-6 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg transition-all duration-200 text-center uppercase tracking-wider text-sm flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        Confirm Signatures &amp; Lock Contract
+                    </button>
+                    <p class="text-center text-xs text-slate-500 mt-2">Warning: Clicking this locks the contract permanently until October 31 at 11:59 PM.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- LOCKED / COUNTDOWN VIEW (Hidden initially, shown after locking) -->
+        <div id="lockedView" class="hidden text-center py-10 space-y-8">
+            <div class="w-20 h-20 bg-red-500/10 border border-red-500/20 text-red-500 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+
+            <div class="space-y-2">
+                <h2 class="text-2xl font-black text-white">Contract Locked &amp; Secured</h2>
+                <p class="text-sm text-slate-400 max-w-md mx-auto">
+                    Yafet Nebiyu and Mikiyas Tafa have signed. The contract details are now sealed until the official challenge deadline. No take-backs!
+                </p>
+            </div>
+
+            <!-- COUNTDOWN TIMER -->
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl max-w-md mx-auto shadow-lg">
+                <span class="text-xs uppercase tracking-widest text-slate-400 font-semibold block mb-4">Time Remaining Until Deadline</span>
+                <div class="grid grid-cols-4 gap-2 text-center">
+                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50">
+                        <span id="days" class="text-2xl sm:text-3xl font-black text-white block">00</span>
+                        <span class="text-[10px] uppercase text-slate-400 font-medium">Days</span>
+                    </div>
+                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50">
+                        <span id="hours" class="text-2xl sm:text-3xl font-black text-white block">00</span>
+                        <span class="text-[10px] uppercase text-slate-400 font-medium">Hours</span>
+                    </div>
+                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50">
+                        <span id="minutes" class="text-2xl sm:text-3xl font-black text-white block">00</span>
+                        <span class="text-[10px] uppercase text-slate-400 font-medium">Minutes</span>
+                    </div>
+                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50">
+                        <span id="seconds" class="text-2xl sm:text-3xl font-black text-white block text-red-400">00</span>
+                        <span class="text-[10px] uppercase text-slate-400 font-medium">Seconds</span>
+                    </div>
+                </div>
+                <div class="mt-4 text-xs text-slate-400 font-medium">
+                    Deadline: October 31, 2026 at 11:59 PM
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <span class="text-xs text-slate-500 italic">Vault secured with localStorage persistence. Refreshing will maintain lockout status.</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const DEADLINE = new Date('2026-10-31T23:59:00').getTime();
+
+        // Initialize Signature Canvases
+        const pads = {};
+
+        function initPad(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size matching display size
+            function resize() {
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 2.5;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            let drawing = false;
+
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: clientX - rect.left,
+                    y: clientY - rect.top
+                };
+            }
+
+            function startDraw(e) {
+                e.preventDefault();
+                drawing = true;
+                const pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+            }
+
+            function draw(e) {
+                if (!drawing) return;
+                e.preventDefault();
+                const pos = getPos(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            }
+
+            function endDraw(e) {
+                if (!drawing) return;
+                e.preventDefault();
+                drawing = false;
+            }
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            window.addEventListener('mouseup', endDraw);
+
+            canvas.addEventListener('touchstart', startDraw, {passive: false});
+            canvas.addEventListener('touchmove', draw, {passive: false});
+            canvas.addEventListener('touchend', endDraw, {passive: false});
+
+            pads[canvasId] = {
+                canvas,
+                ctx,
+                isEmpty: () => {
+                    const blank = document.createElement('canvas');
+                    blank.width = canvas.width;
+                    blank.height = canvas.height;
+                    return canvas.toDataURL() === blank.toDataURL();
+                },
+                clear: () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            };
+        }
+
+        function clearPad(canvasId) {
+            if (pads[canvasId]) {
+                pads[canvasId].clear();
+            }
+        }
+
+        function lockContract() {
+            if (pads['yafetCanvas'].isEmpty() || pads['mikiyasCanvas'].isEmpty()) {
+                alert('Both Yafet Nebiyu and Mikiyas Tafa must sign on the signature pads before locking the contract.');
+                return;
+            }
+
+            // Save locked state
+            localStorage.setItem('challenge_locked', 'true');
+            applyLockState();
+        }
+
+        function applyLockState() {
+            const isLocked = localStorage.getItem('challenge_locked') === 'true';
+            if (isLocked) {
+                document.getElementById('contractView').classList.add('hidden');
+                document.getElementById('lockedView').classList.remove('hidden');
+                startCountdown();
+            }
+        }
+
+        function startCountdown() {
+            function update() {
+                const now = new Date().getTime();
+                const distance = DEADLINE - now;
+
+                if (distance < 0) {
+                    document.getElementById('days').innerText = '00';
+                    document.getElementById('hours').innerText = '00';
+                    document.getElementById('minutes').innerText = '00';
+                    document.getElementById('seconds').innerText = '00';
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = String(days).padStart(2, '0');
+                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            }
+
+            update();
+            setInterval(update, 1000);
+        }
+
+        window.onload = function() {
+            initPad('yafetCanvas');
+            initPad('mikiyasCanvas');
+            applyLockState();
+        };
+    </script>
+</body>
+</html>
