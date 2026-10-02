@@ -275,7 +275,7 @@
             geo[canvasId] = null;
         }
 
-        const STORE = 'https://crudcrud.com/api/9ca8c84594d640f4a8509b921b11aea9/contract/6abe8e36db870303e89a0e6b';
+        const STORE = 'https://crudcrud.com/api/4376c2c341ee4e319c146bac501d2805/contract/6abf5ed6c6bb5503e8676a77';
         const MIN_KM = 5;
         const geo = { yafetCanvas: null, mikiyasCanvas: null };
 
@@ -288,23 +288,23 @@
         }
 
         function captureLocation(canvasId) {
-            if (geo[canvasId]) return;
-            if (!navigator.geolocation) {
-                alert('This phone needs location turned on. Without it, the contract cannot lock.');
-                return;
-            }
-            navigator.geolocation.getCurrentPosition(function(pos) {
-                geo[canvasId] = {
-                    lat: pos.coords.latitude,
-                    lng: pos.coords.longitude,
-                    accuracy: pos.coords.accuracy,
-                    at: Date.now()
-                };
-                const status = document.getElementById('signStatus');
-                if (status) status.textContent = 'Location saved for this signature. The other person must sign from at least 5 km away.';
-            }, function() {
-                alert('Location was blocked. Allow location, then sign again. One person cannot sign for both.');
-            }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+            return new Promise(function(resolve) {
+                if (geo[canvasId]) return resolve(geo[canvasId]);
+                if (!navigator.geolocation) return resolve(null);
+                navigator.geolocation.getCurrentPosition(function(pos) {
+                    geo[canvasId] = {
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                        accuracy: pos.coords.accuracy,
+                        at: Date.now()
+                    };
+                    const status = document.getElementById('signStatus');
+                    if (status) status.textContent = 'Location saved for this signature. The other person must sign from at least 5 km away.';
+                    resolve(geo[canvasId]);
+                }, function() {
+                    resolve(null);
+                }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+            });
         }
 
         async function readStore() {
@@ -322,15 +322,19 @@
             if (!res.ok) throw new Error('store write failed');
         }
 
-        function lockContract() {
+        async function lockContract() {
+            const status = document.getElementById('signStatus');
             const yafetSigned = pads['yafetCanvas'] && !pads['yafetCanvas'].isEmpty();
             const mikiyasSigned = pads['mikiyasCanvas'] && !pads['mikiyasCanvas'].isEmpty();
             if (!yafetSigned && !mikiyasSigned) {
                 alert('Sign your own box first.');
                 return;
             }
+            if (status) status.textContent = 'Saving... allow location if your phone asks.';
+            if (yafetSigned) await captureLocation('yafetCanvas');
+            if (mikiyasSigned) await captureLocation('mikiyasCanvas');
             if ((yafetSigned && !geo.yafetCanvas) || (mikiyasSigned && !geo.mikiyasCanvas)) {
-                alert('Allow location, then sign again. Each signature needs its own location.');
+                alert('Location was blocked, so it could not save. Allow location and tap confirm again.');
                 return;
             }
             if (yafetSigned && mikiyasSigned) {
@@ -340,10 +344,19 @@
                     return;
                 }
             }
-            submitSignatures(yafetSigned, mikiyasSigned);
+            await submitSignatures(yafetSigned, mikiyasSigned);
         }
 
         async function submitSignatures(yafetSigned, mikiyasSigned) {
+            const status = document.getElementById('signStatus');
+            const pending = JSON.parse(localStorage.getItem('challenge_pending') || '{}');
+            const next = {
+                locked: false,
+                yafet: pending.yafet || null,
+                mikiyas: pending.mikiyas || null
+            };
+            if (yafetSigned) next.yafet = geo.yafetCanvas;
+            if (mikiyasSigned) next.mikiyas = geo.mikiyasCanvas;
             try {
                 const current = await readStore();
                 if (current.locked) {
@@ -351,35 +364,40 @@
                     applyLockState();
                     return;
                 }
-                const next = {
-                    locked: false,
-                    yafet: current.yafet,
-                    mikiyas: current.mikiyas
-                };
-                if (yafetSigned) next.yafet = geo.yafetCanvas;
-                if (mikiyasSigned) next.mikiyas = geo.mikiyasCanvas;
-                if (next.yafet && next.mikiyas) {
-                    const km = distanceKm(next.yafet, next.mikiyas);
-                    if (km < MIN_KM) {
-                        alert('Not locked. The two signatures are only ' + km.toFixed(2) + ' km apart. Both of you need to be at least 5 km apart.');
-                        return;
-                    }
-                    next.locked = true;
-                    next.km = Math.round(km * 100) / 100;
-                    next.lockedAt = Date.now();
+                if (!yafetSigned && current.yafet) next.yafet = current.yafet;
+                if (!mikiyasSigned && current.mikiyas) next.mikiyas = current.mikiyas;
+                if (current.yafet && yafetSigned) next.yafet = geo.yafetCanvas;
+                if (current.mikiyas && mikiyasSigned) next.mikiyas = geo.mikiyasCanvas;
+            } catch (err) {}
+            if (next.yafet && next.mikiyas) {
+                const km = distanceKm(next.yafet, next.mikiyas);
+                if (km < MIN_KM) {
+                    alert('Not locked. The two signatures are only ' + km.toFixed(2) + ' km apart. Both of you need to be at least 5 km apart.');
+                    return;
                 }
-                await writeStore(next);
-                if (next.locked) {
-                    localStorage.setItem('challenge_locked', 'true');
-                    applyLockState();
-                } else {
-                    const status = document.getElementById('signStatus');
-                    if (status) status.textContent = 'Your signature is saved. Waiting for the other person, at least 5 km away. Reopening this link will not wipe it.';
-                    alert('Your signature is saved. It will not lock until the other person signs from at least 5 km away.');
-                }
-            } catch (err) {
-                alert('Could not save the signature. Check your connection and try again.');
+                next.locked = true;
+                next.km = Math.round(km * 100) / 100;
+                next.lockedAt = Date.now();
             }
+            localStorage.setItem('challenge_pending', JSON.stringify(next));
+            if (next.locked) localStorage.setItem('challenge_locked', 'true');
+            let savedRemote = false;
+            try {
+                await writeStore({ locked: next.locked, yafet: next.yafet, mikiyas: next.mikiyas, km: next.km || null, lockedAt: next.lockedAt || null });
+                savedRemote = true;
+            } catch (err) {
+                savedRemote = false;
+            }
+            if (next.locked) {
+                applyLockState();
+                return;
+            }
+            if (status) status.textContent = savedRemote
+                ? 'Saved. Waiting for the other person, at least 5 km away. Reopening this link will not wipe it.'
+                : 'Saved on this phone. Waiting for the other person, at least 5 km away.';
+            alert(savedRemote
+                ? 'Saved. It will not lock until the other person signs from at least 5 km away.'
+                : 'Saved on this phone. It will not lock until the other person signs from at least 5 km away.');
         }
 
         function applyLockState() {
@@ -397,6 +415,15 @@
                 if (current.locked) {
                     localStorage.setItem('challenge_locked', 'true');
                     applyLockState();
+                    return;
+                }
+                if (current.yafet || current.mikiyas) {
+                    localStorage.setItem('challenge_pending', JSON.stringify(current));
+                    const status = document.getElementById('signStatus');
+                    if (status && !localStorage.getItem('challenge_locked')) {
+                        const who = current.yafet && !current.mikiyas ? 'Yafet is saved. Waiting for Mikiyas, at least 5 km away.' : (!current.yafet && current.mikiyas ? 'Mikiyas is saved. Waiting for Yafet, at least 5 km away.' : 'Both signatures are saved.');
+                        status.textContent = who;
+                    }
                 }
             } catch (err) {}
         }
