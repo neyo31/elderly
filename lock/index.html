@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The $100 Challenge Binding Agreement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { darkBg: '#0f172a', cardBg: '#1e293b' } } }
+        }
+    </script>
+    <style>
+        canvas { touch-action: none; }
+        body { font-family: Inter, system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; }
+    </style>
+</head>
+<body class="min-h-screen bg-darkBg text-slate-100 flex flex-col items-center justify-start p-4 sm:p-6">
+    <div class="w-full max-w-2xl mx-auto bg-cardBg rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden p-6 sm:p-8">
+        <div class="text-center border-b border-slate-700 pb-6 mb-6">
+            <span class="bg-red-500/10 text-red-400 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-red-500/20">Binding Agreement & Lockout Vault</span>
+            <h1 class="text-2xl sm:text-3xl font-black mt-3 tracking-tight text-white">The $100 Challenge Contract</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">Strict Rules • No Take-Backs • Zero Exceptions</p>
+        </div>
+
+        <div id="gateView" class="space-y-4">
+            <p class="text-sm text-slate-300 text-center">Each person uses their own password, on their own phone.</p>
+            <input id="passwordInput" type="password" placeholder="Your password" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-white outline-none">
+            <button type="button" onclick="enterPassword()" class="w-full py-3 rounded-xl bg-red-600 font-bold">Enter</button>
+            <p id="gateStatus" class="text-center text-xs text-slate-400"></p>
+        </div>
+
+        <div id="contractView" class="hidden space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Party A</span>
+                    <h2 class="text-lg font-bold mt-0.5">Yafet Nebiyu</h2>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Party B</span>
+                    <h2 class="text-lg font-bold mt-0.5">Mikiyas Tafa</h2>
+                </div>
+            </div>
+            <div class="bg-slate-900/40 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300">Terms & Timeline</h3>
+                <ul class="text-sm text-slate-300 space-y-2 list-disc list-inside">
+                    <li><strong class="text-white">Objective:</strong> Both parties must successfully generate and make exactly <strong class="text-green-400">$100</strong>.</li>
+                    <li><strong class="text-white">Start Date & Time:</strong> Friday, October 1 at 7:30 AM</li>
+                    <li><strong class="text-white">Deadline:</strong> October 31 at 11:59 PM</li>
+                    <li><strong class="text-white">Irrevocable Clause:</strong> Once both phones sign from at least 5 km apart, there are zero take-backs.</li>
+                </ul>
+            </div>
+            <div class="bg-slate-900/40 p-5 rounded-xl border border-slate-800 space-y-2 text-sm text-slate-300">
+                <div class="p-2.5 rounded-lg bg-slate-800/50 flex justify-between"><span>Both make $100</span><span class="font-bold text-green-400">No Punishment</span></div>
+                <div class="p-2.5 rounded-lg bg-slate-800/50 flex justify-between"><span>One makes $100, the other fails</span><span class="font-bold text-amber-400">Loser does punishment</span></div>
+                <div class="p-2.5 rounded-lg bg-slate-800/50 flex justify-between"><span>Both fail</span><span class="font-bold text-red-400">Both do punishment</span></div>
+            </div>
+            <div class="bg-red-950/20 border border-red-900/40 p-5 rounded-xl">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-red-400">The Mandatory Punishment</h3>
+                <p class="text-sm text-red-200/90 mt-2">If penalized, the responsible party must go in person to a local pharmacy, ask the clerk for an adult diaper size that fits them, record the entire interaction on video, and send it to the winner as proof.</p>
+            </div>
+            <div class="space-y-3 pt-2 border-t border-slate-800">
+                <h3 id="signTitle" class="text-base font-bold text-white text-center">Your signature</h3>
+                <p class="text-xs text-slate-400 text-center">Sign only your box. Your bro signs on his phone, at least 5 km away.</p>
+                <div class="border-2 border-slate-700 rounded-xl bg-slate-900 overflow-hidden">
+                    <canvas id="signCanvas" class="w-full h-36 cursor-crosshair touch-none"></canvas>
+                </div>
+                <button type="button" onclick="clearPad()" class="text-xs text-slate-400 underline">Clear</button>
+                <button type="button" onclick="confirmSign()" class="w-full py-4 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 font-bold uppercase tracking-wider text-sm">Confirm my signature</button>
+                <p id="signStatus" class="text-center text-xs text-slate-400">Allow location when the phone asks.</p>
+            </div>
+        </div>
+
+        <div id="lockedView" class="hidden text-center py-10 space-y-8">
+            <h2 class="text-2xl font-black text-white">Contract Locked & Secured</h2>
+            <p class="text-sm text-slate-400">Both phones signed from far enough apart. Passwords are done. This stays on the timer.</p>
+            <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl max-w-md mx-auto">
+                <span class="text-xs uppercase tracking-widest text-slate-400 font-semibold block mb-4">Time Remaining Until Deadline</span>
+                <div class="grid grid-cols-4 gap-2 text-center">
+                    <div class="bg-slate-800/80 p-3 rounded-xl"><span id="days" class="text-2xl font-black block">00</span><span class="text-[10px] uppercase text-slate-400">Days</span></div>
+                    <div class="bg-slate-800/80 p-3 rounded-xl"><span id="hours" class="text-2xl font-black block">00</span><span class="text-[10px] uppercase text-slate-400">Hours</span></div>
+                    <div class="bg-slate-800/80 p-3 rounded-xl"><span id="minutes" class="text-2xl font-black block">00</span><span class="text-[10px] uppercase text-slate-400">Minutes</span></div>
+                    <div class="bg-slate-800/80 p-3 rounded-xl"><span id="seconds" class="text-2xl font-black block text-red-400">00</span><span class="text-[10px] uppercase text-slate-400">Seconds</span></div>
+                </div>
+                <div class="mt-4 text-xs text-slate-400">Deadline: October 31, 2026 at 11:59 PM</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const STORE = 'https://crudcrud.com/api/a938e1af6abd47e6932e9d4e2d44569e/contract/6abf68543d5a6a03e84b50dc';
+        const PASSWORDS = { '481926': 'yafet', '726314': 'mikiyas' };
+        const NAMES = { yafet: 'Yafet Nebiyu', mikiyas: 'Mikiyas Tafa' };
+        const DEADLINE = new Date('2026-10-31T23:59:00').getTime();
+        const MIN_KM = 5;
+        let party = sessionStorage.getItem('challenge_party');
+        let drawing = false;
+        let signed = false;
+        const canvas = document.getElementById('signCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width || 300;
+            canvas.height = rect.height || 144;
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+        }
+        function pos(e) {
+            const r = canvas.getBoundingClientRect();
+            const x = e.touches ? e.touches[0].clientX : e.clientX;
+            const y = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: x - r.left, y: y - r.top };
+        }
+        function start(e) { e.preventDefault(); drawing = true; signed = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+        function move(e) { if (!drawing) return; e.preventDefault(); const p = pos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+        function end(e) { if (drawing) e.preventDefault(); drawing = false; }
+        canvas.addEventListener('mousedown', start);
+        canvas.addEventListener('mousemove', move);
+        window.addEventListener('mouseup', end);
+        canvas.addEventListener('touchstart', start, { passive: false });
+        canvas.addEventListener('touchmove', move, { passive: false });
+        canvas.addEventListener('touchend', end, { passive: false });
+        function clearPad() { ctx.clearRect(0, 0, canvas.width, canvas.height); signed = false; }
+
+        function distanceKm(a, b) {
+            const R = 6371;
+            const dLat = (b.lat - a.lat) * Math.PI / 180;
+            const dLng = (b.lng - a.lng) * Math.PI / 180;
+            const s = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * Math.PI / 180) * Math.cos(b.lat * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+            return 2 * R * Math.asin(Math.sqrt(s));
+        }
+        function showLocked() {
+            document.getElementById('gateView').classList.add('hidden');
+            document.getElementById('contractView').classList.add('hidden');
+            document.getElementById('lockedView').classList.remove('hidden');
+            sessionStorage.removeItem('challenge_party');
+            tick();
+            setInterval(tick, 1000);
+        }
+        function tick() {
+            const d = Math.max(0, DEADLINE - Date.now());
+            document.getElementById('days').textContent = String(Math.floor(d / 86400000)).padStart(2, '0');
+            document.getElementById('hours').textContent = String(Math.floor(d % 86400000 / 3600000)).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(Math.floor(d % 3600000 / 60000)).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(Math.floor(d % 60000 / 1000)).padStart(2, '0');
+        }
+        async function readStore() {
+            const res = await fetch(STORE, { cache: 'no-store' });
+            if (!res.ok) throw new Error('read');
+            return res.json();
+        }
+        async function writeStore(data) {
+            const res = await fetch(STORE, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+            if (!res.ok) throw new Error('write');
+        }
+        function enterPassword() {
+            const code = document.getElementById('passwordInput').value.trim();
+            const who = PASSWORDS[code];
+            if (!who) {
+                document.getElementById('gateStatus').textContent = 'Wrong password.';
+                return;
+            }
+            party = who;
+            sessionStorage.setItem('challenge_party', who);
+            openContract();
+        }
+        function openContract() {
+            document.getElementById('gateView').classList.add('hidden');
+            document.getElementById('contractView').classList.remove('hidden');
+            document.getElementById('signTitle').textContent = NAMES[party] + ' signature';
+            resize();
+        }
+        function locate() {
+            return new Promise(function(resolve) {
+                if (!navigator.geolocation) return resolve(null);
+                navigator.geolocation.getCurrentPosition(function(p) {
+                    resolve({ lat: p.coords.latitude, lng: p.coords.longitude, at: Date.now() });
+                }, function() { resolve(null); }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+            });
+        }
+        async function confirmSign() {
+            const status = document.getElementById('signStatus');
+            if (!signed) { alert('Sign your box first.'); return; }
+            status.textContent = 'Saving this phone... allow location if asked.';
+            const here = await locate();
+            if (!here) { alert('Location was blocked. Allow location, then confirm again.'); return; }
+            try {
+                const current = await readStore();
+                if (current.locked) { showLocked(); return; }
+                const next = { locked: false, yafet: current.yafet || null, mikiyas: current.mikiyas || null };
+                next[party] = here;
+                const other = party === 'yafet' ? next.mikiyas : next.yafet;
+                if (other) {
+                    const km = distanceKm(here, other);
+                    if (km < MIN_KM) {
+                        status.textContent = 'Other phone is only ' + km.toFixed(2) + ' km away. Need 5 km. Not locked.';
+                        alert('Not locked. The other phone is only ' + km.toFixed(2) + ' km from this one. You need to be at least 5 km apart.');
+                        return;
+                    }
+                    next.locked = true;
+                    next.km = Math.round(km * 100) / 100;
+                }
+                await writeStore(next);
+                if (next.locked) { showLocked(); return; }
+                status.textContent = 'Saved from this phone. Waiting for the other password, at least 5 km away.';
+                alert('Saved. Your bro signs on his phone with his password. It locks only if that phone is at least 5 km away.');
+            } catch (err) {
+                alert('Could not save to the shared lock. Check connection and tap confirm again.');
+            }
+        }
+        async function sync() {
+            try {
+                const current = await readStore();
+                if (current.locked) showLocked();
+            } catch (err) {}
+        }
+        window.onload = function() {
+            resize();
+            sync();
+            setInterval(sync, 6000);
+            if (party) openContract();
+        };
+        document.getElementById('passwordInput').addEventListener('keydown', function(e) { if (e.key === 'Enter') enterPassword(); });
+    </script>
+</body>
+</html>
